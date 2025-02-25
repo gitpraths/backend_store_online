@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "auth_app",
     "chowkidar",
+    "product",
 ]
 
 MIDDLEWARE = [
