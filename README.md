@@ -63,67 +63,137 @@ query{
   protectedData
 }
 
+
+
 Product
-===============
+
+++++++++++++++++++++++++
+
+
+
 
 
 Fetch All Categories and Their Products
+
+===================================
+
 query {
+
   allCategories {
+
     id
+
     name
+
     description
+
     products {
+
       id
+
       name
+
       price
+
       stock
+
     }
+
   }
+
 }
 
+
+
 Fetch a Single Category by ID
+
+====================================
+
 query {
+
   category(id: 1) {
+
     id
+
     name
+
     description
+
     products {
+
       id
+
       name
+
     }
+
   }
+
 }
+
+
 
  Fetch All Products
 
+==============================
+
+
+
 query {
+
   allProducts {
+
     id
+
     name
+
     price
+
     stock
+
     category {
+
       id
+
       name
+
     }
+
   }
+
 }
+
+
 
 Fetch a Single Product by ID
 
-query {
-  product(id: 1) {
-    id
-    name
-    description
-    price
-    stock
-    category {
-      id
-      name
-    }
-  }
-}
+===================================
 
+
+
+query {
+
+  product(id: 1) {
+
+    id
+
+    name
+
+    description
+
+    price
+
+    stock
+
+    category {
+
+      id
+
+      name
+
+    }
+
+  }
+
+}
 ```
