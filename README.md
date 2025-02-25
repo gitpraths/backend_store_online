@@ -1,199 +1,165 @@
-# backend_store_online
+backend_store_online
+This README provides instructions to test registration, login, and GraphQL queries for the Django backend system implemented with Chokidar and Strawberry GraphQL.
 
-To test registration and login using your Django application with Chokidar and Strawberry GraphQL, you can follow these steps. You can use a GraphQL client like Postman, Insomnia, or even a web interface like GraphiQL, which usually comes with Django projects set up for GraphQL.
+Prerequisites
+Install dependencies and ensure your project is set up correctly.
+Verify that your Django server is ready and PostgreSQL is configured for custom user tables.
+Testing Registration and Login
+Follow these steps to test user registration and login functionalities using GraphQL. A GraphQL client like Postman, Insomnia, or GraphiQL can be used.
 
-### Step 1: Start Your Django Server
+Step 1: Start Django Server
+Run the following command to start the Django development server:
 
-Before testing, make sure your Django server is running. You can start your server with:
+bash
 
-```bash
 python manage.py runserver
-```
+The server will be accessible at http://127.0.0.1:8000/graphql/ (or your configured endpoint).
 
-### Step 2: Testing Registration
+Step 2: Registration
+To register a new user, execute the following steps:
 
-1. **Open your GraphQL client** (for example, GraphiQL or Postman).
+Open your GraphQL client (e.g., Postman, Insomnia, or GraphiQL).
+Perform the following GraphQL mutation to register a user:
+graphql
 
-2. **Use the following mutation to register a new user**. Replace the values for `username`, `email`, and `password` with your desired inputs:
-
-```graphql
 mutation {
-  register(
-    username: "testuser"
-    email: "testuser@example.com"
-    password: "securepassword"
-  )
+register(
+username: "testuser"
+email: "testuser@example.com"
+password: "securepassword"
+name: "Test User"
+avatar: "path/to/avatar.jpg"
+) {
+message
+success
 }
-```
+}
+Expected Response: Successful registration will return:
+json
 
-3. **Expected Response:**
-   If the registration is successful, you should receive a response similar to:
-
-```json
 {
-  "data": {
-    "register": "User testuser registered successfully!"
-  }
+"data": {
+"register": {
+"message": "User testuser registered successfully!",
+"success": true
 }
-```
+}
+}
+If the username or email is already taken, you will get an error response:
 
-4. **Check for errors:** If there are any validation errors (e.g., username already taken), they will be returned in the response.
+json
 
-### Step 3: Testing Login
+{
+"data": {
+"register": {
+"message": "A user with that username or email already exists.",
+"success": false
+}
+}
+}
+Step 3: Login
+To log in with the registered user credentials, follow these steps:
 
-1. **In the same GraphQL client, use the following mutation to log in**. Make sure to provide the correct username and password:
+Use the following login mutation:
+graphql
 
-```graphql
 mutation {
-  login(username: "testuser", password: "securepassword")
+login(email: "testuser@example.com", password: "securepassword")
 }
-```
+Expected Response: Successful login will return:
+json
 
-2. **Expected Response:**
-   If the login is successful, you should receive a response similar to:
-
-```json
 {
-  "data": {
-    "login": true
-  }
+"data": {
+"login": true
 }
-
-query{
-  protectedData
 }
+If the email or password is invalid, an exception will be raised:
 
+json
 
+{
+"errors": [
+{
+"message": "Invalid username or password",
+"locations": [{ "line": 2, "column": 3 }],
+"path": ["login"]
+}
+]
+}
+GraphQL Product Queries
+This section provides detailed queries for fetching:
 
-Product
-
-++++++++++++++++++++++++
-
-
-
-
-
-Fetch All Categories and Their Products
-
-===================================
+Categories
+Products
+Single specific entries for categories or products.
+Navigate to the GraphQL endpoint (http://127.0.0.1:8000/graphql/) to execute these queries.
+Query: Fetch All Categories and Their Products
+graphql
 
 query {
-
-  allCategories {
-
-    id
-
-    name
-
-    description
-
-    products {
-
-      id
-
-      name
-
-      price
-
-      stock
-
-    }
-
-  }
-
+allCategories {
+id
+name
+description
+products {
+id
+name
+price
+stock
 }
-
-
-
-Fetch a Single Category by ID
-
-====================================
+}
+}
+Query: Fetch a Single Category by ID
+graphql
 
 query {
-
-  category(id: 1) {
-
-    id
-
-    name
-
-    description
-
-    products {
-
-      id
-
-      name
-
-    }
-
-  }
-
+category(id: 1) {
+id
+name
+description
+products {
+id
+name
 }
-
-
-
- Fetch All Products
-
-==============================
-
-
+}
+}
+Query: Fetch All Products
+graphql
 
 query {
-
-  allProducts {
-
-    id
-
-    name
-
-    price
-
-    stock
-
-    category {
-
-      id
-
-      name
-
-    }
-
-  }
-
+allProducts {
+id
+name
+price
+stock
+category {
+id
+name
 }
-
-
-
-Fetch a Single Product by ID
-
-===================================
-
-
+}
+}
+Query: Fetch a Single Product by ID
+graphql
 
 query {
-
-  product(id: 1) {
-
-    id
-
-    name
-
-    description
-
-    price
-
-    stock
-
-    category {
-
-      id
-
-      name
-
-    }
-
-  }
-
+product(id: 1) {
+id
+name
+description
+price
+stock
+category {
+id
+name
 }
-```
+}
+}
+Protected Queries (Required Authentication)
+After logging in successfully, you can access authenticated data by sending specific queries to the server. For example:
+
+graphql
+
+query {
+protectedData
+}
