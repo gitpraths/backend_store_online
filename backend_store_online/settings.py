@@ -23,6 +23,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-n_i34=_vo37j&6k+da1t2#5oovj^*t7690%bsjx99$7*yq3kx!"
 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "onlineDB",
+        "USER": "avnadmin",
+        "PASSWORD": "AVNS_pj03tDEz_nmkXiblYvq",
+        "HOST": "onlinestore-dreamteam-2025.i.aivencloud.com",  # Or an IP address or domain name
+        "PORT": "15137",  # Default PostgreSQL port
+    }
+}
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -85,13 +96,6 @@ WSGI_APPLICATION = "backend_store_online.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
 
 
 # Password validation
