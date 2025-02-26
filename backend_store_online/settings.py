@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from django.utils import timezone
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,11 +27,11 @@ SECRET_KEY = "django-insecure-n_i34=_vo37j&6k+da1t2#5oovj^*t7690%bsjx99$7*yq3kx!
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "onlineDB",
-        "USER": "avnadmin",
-        "PASSWORD": "AVNS_pj03tDEz_nmkXiblYvq",
-        "HOST": "onlinestore-dreamteam-2025.i.aivencloud.com",  # Or an IP address or domain name
-        "PORT": "15137",  # Default PostgreSQL port
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_HOST"),  # Default is localhost
+        "PORT": config("DB_PORT"),  # Default is 5432 for PostgreSQL
     }
 }
 
