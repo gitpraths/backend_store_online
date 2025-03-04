@@ -30,18 +30,18 @@ DATABASES = {
         "NAME": config("DB_NAME"),
         "USER": config("DB_USER"),
         "PASSWORD": config("DB_PASSWORD"),
-        "HOST": config("DB_HOST"),  # Default is localhost
-        "PORT": config("DB_PORT"),  # Default is 5432 for PostgreSQL
+        "HOST": config("DB_HOST"),
+        "PORT": config("DB_PORT"),
     }
 }
 
-# SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
 REFRESH_TOKEN_MODEL = "auth_app.RefreshToken"
-# Application definition
+
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "auth_app",
     "chowkidar",
     "product",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -63,9 +64,22 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
-
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = "backend_store_online.urls"
+
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "PUT",
+    "DELETE",
+    "OPTIONS",
+]
 
 TEMPLATES = [
     {
