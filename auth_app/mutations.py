@@ -17,6 +17,14 @@ class RegisterResponse:
 
 
 @strawberry.type
+class LoginResult:
+    success: bool
+    username: str | None
+    token: str | None
+    errors: str | None
+
+
+@strawberry.type
 class AuthMutations:
     @strawberry.mutation
     def register(
@@ -29,7 +37,6 @@ class AuthMutations:
                 password=password,
                 first_name=name,
             )
-
             return RegisterResponse(
                 message=f"User {user.username} registered successfully!", success=True
             )
@@ -41,13 +48,18 @@ class AuthMutations:
 
     @strawberry.mutation
     @issue_tokens_on_login
-    def login(self, info, username: str, password: str) -> bool:
-        print(f"Username: {username}, Password: {password}")
+    def login(self, info, username: str, password: str) -> LoginResult:
         user = authenticate(username=username, password=password)
-        if user is None:
-            raise Exception("Invalid username or password")
-        info.context.LOGIN_USER = user
-        return True
+        if user:
+            request = info.context["request"]
+            jwt_access_token = request.COOKIES.get("JWT_ACCESS_TOKEN")
+            return LoginResult(
+                success=True,
+                username=user.username,
+                token=jwt_access_token,
+                errors=None,
+            )
+        return LoginResult(success=False, token=None, errors="Invalid credentials")
 
     @strawberry.mutation
     @revoke_tokens_on_logout
